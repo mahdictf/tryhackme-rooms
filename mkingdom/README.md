@@ -246,3 +246,138 @@ nc -lnvp <NEW_PORT>
 - **Creative solutions** overcome apparent limitations
 
 ## 🛠️ Tools Used
+- `nmap` - Port scanning and service enumeration
+- `gobuster` - Directory and file discovery
+- `netcat` - Reverse shell listener
+- `linPEAS` - Automated privilege escalation enumeration
+- `pspy32` - Real-time process monitoring
+- `python3 http.server` - Local HTTP server hosting
+- `base64` - Token decoding
+- **Concrete5 CMS** - Target application platform
+
+## 🎯 Attack Flow Diagram
+```
+1. Port Scan → Single HTTP port (80)
+2. Directory Enum → /app directory discovery
+3. CMS Identification → Concrete5 detected
+4. Default Creds → admin:password
+5. File Upload Bypass → Add PHP extension
+6. Reverse Shell → www-data access
+7. Config File → Database credentials (toad)
+8. User Lateral → Switch to toad
+9. Env Variables → pwd_token discovery
+10. Token Decode → Mario's password
+11. User Escalation → Switch to mario
+12. LinPEAS → /etc/hosts writable
+13. Process Monitor → Cronjob discovery
+14. DNS Hijack → Redirect mkingdom.thm
+15. Malicious Script → Replace counter.sh
+16. Root Shell → Privilege escalation complete
+```
+
+## 🔧 Critical Configuration Points
+
+### 📁 File Extension Bypass
+```php
+// Concrete5 file extension configuration
+// Navigate to: System & Settings → Files → Allowed File Types
+// Add: php, phtml, php3, php4, php5
+```
+
+### 🌐 HTTP Server Directory Structure
+```bash
+# Required directory structure for cronjob hijack
+mkdir -p /tmp/server/app/castle/application/
+cd /tmp/server
+python3 -m http.server 85
+```
+
+### 🔧 /etc/hosts Manipulation
+```bash
+# Add redirect entry
+echo "YOUR_ATTACKER_IP mkingdom.thm" >> /etc/hosts
+
+# Verify modification
+cat /etc/hosts
+```
+
+## ⚠️ Common Pitfalls
+
+### 🚫 File Upload Issues
+- **Extension filtering** - Try multiple PHP extensions
+- **File permissions** - Ensure uploaded files are executable
+- **Path discovery** - Find where uploaded files are stored
+
+### 🔍 Enumeration Oversights
+- **Environment variables** often contain credentials
+- **Configuration files** in application directories
+- **Process monitoring** reveals hidden automated tasks
+
+### 🎯 Privilege Escalation Challenges
+- **Timing attacks** require patience and multiple attempts
+- **Network connectivity** between attacker and target
+- **Service dependencies** may affect cronjob execution
+
+## 🎯 Alternative Attack Vectors
+
+### 🔄 If File Upload Fails
+1. **SQL injection** testing in login forms
+2. **Local file inclusion** through application parameters
+3. **Remote code execution** via CMS vulnerabilities
+4. **Configuration file disclosure** through path traversal
+
+### 🚀 Alternative Privilege Escalation
+1. **SUID binaries** enumeration
+2. **Kernel exploits** based on system version
+3. **Service vulnerabilities** for local privilege escalation
+4. **Scheduled tasks** beyond cronjobs
+
+## 📋 Enumeration Checklist
+
+### 🔍 Initial Assessment
+- [ ] Port scanning (TCP/UDP)
+- [ ] Service version identification
+- [ ] Directory/file enumeration
+- [ ] Technology stack identification
+
+### 🌐 Web Application Testing
+- [ ] Default credential testing
+- [ ] File upload functionality
+- [ ] Parameter fuzzing
+- [ ] Source code analysis
+
+### 👤 Post-Exploitation Enumeration
+- [ ] Configuration file analysis
+- [ ] Environment variable inspection
+- [ ] Database credential hunting
+- [ ] Process monitoring setup
+
+### 🚀 Privilege Escalation Research
+- [ ] SUID/GUID binary analysis
+- [ ] Writable file identification
+- [ ] Scheduled task discovery
+- [ ] Network service enumeration
+
+## 🎓 Skills Developed
+
+### 🔧 Technical Skills
+- **CMS exploitation** techniques
+- **File upload bypass** methods
+- **Process monitoring** and analysis
+- **DNS hijacking** for privilege escalation
+- **Environment variable** enumeration
+
+### 🧠 Methodology Skills
+- **Systematic enumeration** approach
+- **Creative problem-solving** for limited attack surfaces
+- **Multi-stage attack** planning and execution
+- **Persistence** through extensive enumeration
+
+---
+
+> **💡 Pro Tip:** The mKingdom challenge emphasizes that even with limited open ports, thorough enumeration can reveal multiple attack paths. The combination of file upload bypass, credential reuse, and cronjob manipulation demonstrates the importance of comprehensive system analysis.
+
+**Author:** Your Security Notes  
+**Date:** Created for TryHackMe mKingdom Room  
+**Difficulty:** Medium  
+**Tags:** `#tryhackme` `#concrete5` `#fileupload` `#cronjob` `#privesc` `#enumeration`
