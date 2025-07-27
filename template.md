@@ -1,372 +1,213 @@
-# TryHackMe [ROOM_NAME] - Complete Walkthrough
+# 🎯 [Room Name]
 
-![TryHackMe](https://img.shields.io/badge/TryHackMe-[ROOM_NAME]-red?style=for-the-badge&logo=tryhackme)
-![Difficulty](https://img.shields.io/badge/Difficulty-[EASY/MEDIUM/HARD]-[green/orange/red]?style=for-the-badge)
-![Category](https://img.shields.io/badge/Category-[CATEGORY]-blue?style=for-the-badge)
+<div align="center">
 
-## 📋 Table of Contents
-- [Overview](#overview)
-- [Room Information](#room-information)
-- [Initial Setup](#initial-setup)
-- [Reconnaissance](#reconnaissance)
-- [Enumeration](#enumeration)
-- [Initial Access](#initial-access)
-- [Post-Exploitation](#post-exploitation)
-- [Privilege Escalation](#privilege-escalation)
-- [Flags](#flags)
-- [Questions & Answers](#questions--answers)
-- [Alternative Methods](#alternative-methods)
-- [Key Learnings](#key-learnings)
-- [Tools Used](#tools-used)
-- [References](#references)
+**Challenge Overview**
+| Attribute | Value |
+|-----------|-------|
+| **Target** | `[IP/File/URL]` |
+| **Category** | [Web/Network/Forensics/Crypto/OSINT/RE/Pwn] |
+| **Difficulty** | ⭐⭐⭐ |
+| **Status** | 🔄 In Progress / ✅ Complete |
+| **Time** | [Duration] |
 
-## 🎯 Overview
-Brief description of what this room teaches and main objectives:
-- **Primary Skills:** [List main skills learned]
-- **Technologies:** [List technologies involved]
-- **Attack Vectors:** [List main attack methods]
-- **Difficulty Justification:** [Why this difficulty level]
+</div>
 
-## 📊 Room Information
-- **Room URL:** [TryHackMe room link]
-- **Creator:** [Room creator if known]
-- **Release Date:** [If known]
-- **Estimated Time:** [Your completion time]
-- **Prerequisites:** [Required knowledge/rooms]
+---
 
-## 🚀 Initial Setup
+## 🏆 Challenge Solutions
 
-### 🌐 Environment Preparation
-```bash
-# Create working directory
-mkdir [room_name]
-cd [room_name]
-mkdir {nmap,gobuster,exploits,flags,notes}
+| Task | Question | Answer | Method |
+|------|----------|--------|---------|
+| **1** | [Question text or summary] | `answer` | [Brief approach] |
+| **2** | [Question text or summary] | `flag{...}` | [Brief approach] |
+| **3** | [Question text or summary] | `answer` | [Brief approach] |
 
-# Set target IP variable
-export TARGET_IP=[MACHINE_IP]
-```
-
-### 📡 Network Configuration
-```bash
-# Verify connectivity
-ping -c 3 $TARGET_IP
-
-# Add to /etc/hosts if needed
-echo "$TARGET_IP [hostname]" | sudo tee -a /etc/hosts
-```
+---
 
 ## 🔍 Reconnaissance
 
-### 🌐 Port Scanning
+**Initial Discovery:**
 ```bash
-# Quick scan
-nmap -T4 -p- --min-rate=1000 $TARGET_IP
-
-# Detailed scan
-nmap -sC -sV -p [ports] -oN nmap/detailed_scan.txt $TARGET_IP
-
-# UDP scan (if needed)
-sudo nmap -sU --top-ports 1000 $TARGET_IP
+# Primary enumeration
+[key discovery commands]
 ```
 
-### 📊 Scan Results
-| Port | Service | Version | Notes |
-|------|---------|---------|-------|
-| [port] | [service] | [version] | [observations] |
+**Key Findings:**
+- 🎯 **[Finding 1]:** [Description]
+- 🎯 **[Finding 2]:** [Description]
+- 🎯 **[Finding 3]:** [Description]
 
-### 🔍 Service Enumeration
-```bash
-# Additional service-specific scans
-# Example for HTTP:
-nmap --script http-enum -p 80 $TARGET_IP
-
-# Example for SMB:
-nmap --script smb-enum-* -p 445 $TARGET_IP
+**Attack Surface:**
+```mermaid
+graph LR
+    A[Entry Point] --> B[Vulnerability]
+    B --> C[Exploitation]
+    C --> D[Objective]
 ```
-
-## 🕸️ Enumeration
-
-### 📁 Web Directory Enumeration
-```bash
-# Gobuster
-gobuster dir -u http://$TARGET_IP -w /usr/share/seclists/Discovery/Web-Content/big.txt -o gobuster/directories.txt
-
-# Alternative tools
-# dirb http://$TARGET_IP
-# ffuf -w wordlist.txt -u http://$TARGET_IP/FUZZ
-```
-
-### 🔍 Technology Stack
-- **Web Server:** [Apache/Nginx/IIS version]
-- **Backend:** [PHP/Python/Node.js/etc]
-- **Database:** [MySQL/PostgreSQL/etc]
-- **CMS/Framework:** [WordPress/Drupal/etc]
-
-### 📋 Discovered Endpoints
-| Path | Status | Size | Notes |
-|------|---------|------|-------|
-| [/path] | [200/403/etc] | [size] | [observations] |
-
-## 🚪 Initial Access
-
-### 🎯 Attack Vector
-**Method Used:** [Describe the method]
-
-### 💥 Exploitation Steps
-```bash
-# Step 1: [Description]
-[command]
-
-# Step 2: [Description]
-[command]
-
-# Step 3: [Description]
-[command]
-```
-
-### 🐚 Shell Stabilization
-```bash
-# Upgrade shell (if needed)
-python3 -c 'import pty;pty.spawn("/bin/bash")'
-export TERM=xterm
-# Ctrl+Z
-stty raw -echo; fg
-```
-
-### 👤 Initial User Context
-- **Username:** [username]
-- **UID/GID:** [uid/gid info]
-- **Groups:** [group memberships]
-- **Home Directory:** [home path]
-- **Shell:** [shell type]
-
-## 🔍 Post-Exploitation
-
-### 🗂️ System Information
-```bash
-# Basic system info
-uname -a
-cat /etc/os-release
-whoami && id
-```
-
-### 📁 File System Exploration
-```bash
-# Interesting directories
-ls -la /home/
-ls -la /var/www/
-ls -la /opt/
-ls -la /tmp/
-
-# Configuration files
-find /etc -name "*.conf" -readable 2>/dev/null
-```
-
-### 🔐 Credential Hunting
-```bash
-# Common credential locations
-cat /etc/passwd
-cat /etc/shadow 2>/dev/null
-grep -r "password" /var/www/ 2>/dev/null
-find / -name "*.sql" -o -name "*.db" 2>/dev/null
-```
-
-### 🌐 Network Analysis
-```bash
-# Network connections
-netstat -tulpn
-ss -tulpn
-
-# Network interfaces
-ip addr show
-ifconfig
-```
-
-## 🚀 Privilege Escalation
-
-### 🔍 Enumeration
-```bash
-# Automated enumeration
-wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh
-chmod +x linpeas.sh
-./linpeas.sh
-
-# Manual checks
-sudo -l
-find / -perm -4000 2>/dev/null
-crontab -l
-systemctl list-timers
-```
-
-### 🎯 Privilege Escalation Vector
-**Method:** [Describe the method used]
-
-### 💥 Exploitation
-```bash
-# Exploitation commands
-[detailed steps]
-```
-
-### 👑 Root Verification
-```bash
-whoami
-id
-cat /etc/shadow
-```
-
-## 🏆 Flags
-
-### 📍 Flag Locations
-- **User Flag:** `[flag_value]` - Location: `[path]`
-- **Root Flag:** `[flag_value]` - Location: `[path]`
-- **Other Flags:** 
-  - Flag 3: `[value]` - `[location]`
-  - Flag 4: `[value]` - `[location]`
-
-## ❓ Questions & Answers
-
-### Task 1: [Task Name]
-**Q1:** [Question text]  
-**A1:** `[answer]`  
-**Method:** [How you found it]
-
-**Q2:** [Question text]  
-**A2:** `[answer]`  
-**Method:** [How you found it]
-
-### Task 2: [Task Name]
-**Q1:** [Question text]  
-**A1:** `[answer]`  
-**Method:** [How you found it]
-
-## 🔄 Alternative Methods
-
-### 🎯 Alternative Attack Vectors
-1. **Method 1:** [Description]
-   ```bash
-   # Commands
-   ```
-
-2. **Method 2:** [Description]
-   ```bash
-   # Commands
-   ```
-
-### 🚀 Alternative Privilege Escalation
-- **Vector 1:** [Description and commands]
-- **Vector 2:** [Description and commands]
-
-## 📚 Key Learnings
-
-### 🔍 Technical Skills
-- **[Skill 1]:** [What you learned]
-- **[Skill 2]:** [What you learned]
-- **[Skill 3]:** [What you learned]
-
-### 🛡️ Security Concepts
-- **[Concept 1]:** [Understanding gained]
-- **[Concept 2]:** [Understanding gained]
-
-### 🎯 Methodology Improvements
-- **[Improvement 1]:** [What you'll do differently]
-- **[Improvement 2]:** [What you'll do differently]
-
-### ⚠️ Common Pitfalls
-- **[Pitfall 1]:** [What to avoid and why]
-- **[Pitfall 2]:** [What to avoid and why]
-
-## 🛠️ Tools Used
-
-### 🔍 Reconnaissance & Enumeration
-- `nmap` - [Specific usage]
-- `gobuster` - [Specific usage]
-- `[tool]` - [Specific usage]
-
-### 💥 Exploitation
-- `[exploit_tool]` - [Purpose]
-- `[payload]` - [Purpose]
-
-### 🚀 Post-Exploitation
-- `linpeas.sh` - [Usage]
-- `[tool]` - [Usage]
-
-### 🔧 Utilities
-- `netcat` - [Usage]
-- `python3` - [Usage]
-- `[tool]` - [Usage]
-
-## 📖 References
-
-### 🔗 Helpful Resources
-- **[Resource 1]:** [URL] - [Description]
-- **[Resource 2]:** [URL] - [Description]
-- **[CVE/Exploit]:** [Details]
-
-### 📚 Learning Materials
-- **[Tutorial/Guide]:** [URL]
-- **[Documentation]:** [URL]
-
-### 🛠️ Tool Documentation
-- **[Tool Name]:** [Documentation URL]
-
-## 🎯 Attack Chain Summary
-```
-1. [Step 1] → [Result]
-2. [Step 2] → [Result]
-3. [Step 3] → [Result]
-4. [Step 4] → [Result]
-5. [Step 5] → [Complete Compromise]
-```
-
-## 📋 Personal Notes
-
-### 💭 Thought Process
-- [Your thinking during the challenge]
-- [Decisions made and why]
-- [Roadblocks encountered]
-
-### ⏱️ Time Breakdown
-- **Reconnaissance:** [time]
-- **Initial Access:** [time]
-- **Privilege Escalation:** [time]
-- **Documentation:** [time]
-- **Total:** [total time]
-
-### 🎯 Difficulty Assessment
-**Personal Rating:** [X/10]  
-**Reasoning:** [Why this rating]
-
-### 🔄 Areas for Improvement
-- [What you could have done better]
-- [Skills to develop further]
-- [Tools to learn]
 
 ---
 
-> **💡 Pro Tip:** [Your key insight or tip for others attempting this room]
+## 🧪 Lab Environment
 
-**Completion Date:** [Date]  
-**Author:** Your Security Notes  
-**Room Status:** ✅ Completed  
-**Tags:** `#tryhackme` `#[tag1]` `#[tag2]` `#[tag3]`
+**Setup Commands:**
+```bash
+# Environment preparation
+export TARGET=[IP/File/URL]
+export LHOST=[Your IP]
+export LPORT=[Your Port]
+
+# Quick aliases for this session
+alias target='[common command for this challenge]'
+alias scan='[frequently used scan command]'
+```
+
+**File Organization:**
+```
+challenge_workspace/
+├── 📁 reconnaissance/     # Scan outputs, enumeration data
+├── 📁 exploitation/       # Payloads, exploits, scripts
+├── 📁 evidence/          # Screenshots, flags, proof
+└── 📁 tools/             # Custom scripts for this challenge
+```
 
 ---
 
-## 📝 Template Usage Instructions
+## ⚡ Exploitation Chain
 
-1. **Replace all bracketed placeholders** with actual content
-2. **Remove unused sections** if not applicable
-3. **Add additional sections** as needed for specific room types
-4. **Update badges** with correct difficulty colors:
-   - Easy: `green`
-   - Medium: `orange` 
-   - Hard: `red`
-5. **Customize categories** as needed:
-   - Web Exploitation
-   - Privilege Escalation
-   - Boot2Root
-   - Forensics
-   - Cryptography
-   - Reverse Engineering
-   - etc.
+### Phase 1: Initial Access
+```bash
+# Commands for initial foothold
+[working commands]
+```
+**Result:** [What was achieved]
+
+### Phase 2: Privilege Escalation / Deep Analysis
+```bash
+# Commands for escalation or deeper investigation
+[working commands]
+```
+**Result:** [What was achieved]
+
+### Phase 3: Objective Achievement
+```bash
+# Final commands to complete objectives
+[working commands]
+```
+**Result:** [Flags obtained / Goals completed]
+
+---
+
+## 🛠️ Tools & Techniques
+
+**Primary Tools:**
+- **[Tool 1]** - [Specific use case]
+- **[Tool 2]** - [Specific use case]
+- **[Tool 3]** - [Specific use case]
+
+**Key Technique:** [Main methodology that led to success]
+
+---
+
+## 💎 Critical Information
+
+**Credentials:**
+```
+username:password - [source/service]
+user2:hash - [context]
+```
+
+**Important Files/Paths:**
+```
+/path/to/important/file - [description]
+/another/critical/path - [purpose]
+```
+
+**Network Information:**
+```
+Service:Port - [details]
+Vulnerability - [description]
+```
+
+---
+
+## 🎯 Mental Model
+
+**The "Aha!" Moment:**
+> [Describe the exact moment when the solution clicked - this is golden for future reference]
+
+**Thought Process:**
+1. **Initial Hypothesis:** [What you first thought the challenge was about]
+2. **Pivot Point:** [When and why you changed approach]  
+3. **Solution Insight:** [The key realization that led to success]
+
+**If I Did This Again:**
+- **Start with:** [What you'd do first next time]
+- **Skip:** [What was a waste of time]
+- **Focus on:** [What was most important]
+
+---
+
+## 📚 Knowledge Base Update
+
+**🧬 Core Concepts:**
+- **[Concept 1]:** [Why it matters + when to use]
+- **[Concept 2]:** [Real-world application]
+
+**🔧 Technique Arsenal Updated:**
+```bash
+# New command learned
+[command] --flag value  # [when to use this]
+
+# Improved workflow  
+[sequence of commands]  # [efficiency gain]
+```
+
+**⚠️ Red Flags Learned:**
+- **[Indicator 1]** → Suggests [vulnerability/approach]
+- **[Indicator 2]** → Usually means [specific condition]
+
+**🎓 Skill Tree Progress:**
+- **[Skill Area]**: Novice → Intermediate → **Advanced** ← Current
+- **Next Challenge:** [Skill to develop] via [suggested room/practice]
+
+---
+
+## 📋 Quick Reference
+
+**One-Liner Solution:**
+```bash
+[The most critical command that solved the challenge]
+```
+
+**Similar Challenges:**
+- **[Room Name]** - [Why it's similar]
+- **[Room Name]** - [Connection/similarity]
+
+---
+
+## 📊 Personal Assessment
+
+| Metric | Rating | Notes |
+|--------|--------|-------|
+| **Technical Difficulty** | [X]/10 | [Reasoning] |
+| **Learning Value** | [X]/10 | [What made it valuable] |
+| **Enjoyment** | [X]/10 | [What was engaging] |
+| **Recommendation** | ✅/❌ | [Would you recommend this room] |
+
+---
+
+## 🎖️ Achievement Summary
+
+- ✅ **Completed:** [Date]
+- 🕒 **Duration:** [Total time spent]
+- 💡 **Hints Used:** [Number] / [Available]
+- 🏆 **Success Rate:** [First attempt / Multiple attempts]
+
+---
+
+<div align="center">
+
+**Template Version 2.0** | *Optimized for Professional Documentation*
+
+</div>
